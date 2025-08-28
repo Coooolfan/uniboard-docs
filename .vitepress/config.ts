@@ -61,7 +61,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: 'https://github.com/Coooolfan/UniBoard-docs/edit/main/uniboard-docs/:path',
+      pattern: 'https://github.com/Coooolfan/UniBoard-docs/edit/main/:path',
       text: '在 GitHub 上编辑此页'
     },
 
