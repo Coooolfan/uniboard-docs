@@ -107,5 +107,4 @@ UniBoard 提供完整的文件 API 接口：
 
 - 学习使用 [探针监控](/guide/probe) 功能
 - 了解 [短链服务](/guide/shorturl) 分享文件链接
-- 查看 [功能详解](/features/file-system) 了解技术实现
 - 阅读 [部署指南](/deployment/) 了解存储配置

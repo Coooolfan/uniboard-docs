@@ -56,4 +56,3 @@ UniBoard 提供了内置的图床服务：
 - 学习使用 [短链服务](/guide/shorturl) 分享笔记链接
 - 了解 [文件分享](/guide/fileshare) 功能上传附件
 - 探索 [探针监控](/guide/probe) 查看系统状态
-- 查看 [功能详解](/features/notes-system) 了解技术细节

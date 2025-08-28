@@ -65,5 +65,3 @@ docker compose up -d
 ## 下一步
 
 - 浏览 [个人主页](/guide/homepage) 深入了解各个模块
-
-如果遇到问题，请查看 [常见问题](/guide/faq) 或在 GitHub 上提交 Issue。
