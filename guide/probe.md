@@ -17,8 +17,47 @@ UniBoard 采用被动的"推"方式收集监控数据，即探针主动向 UniBo
 
 ### 数据流向
 
-```
-监控目标 → 采集脚本 → HTTP POST → UniBoard → 数据存储 → Web 界面展示
+```mermaid
+graph
+
+    subgraph "监控目标服务器-1"
+        A1["采集脚本"]
+    end
+    
+    subgraph "监控目标服务器-2"
+        A2["采集脚本"]
+    end
+    
+    subgraph "监控目标服务器-3"
+        A3["采集脚本"]
+    end
+    
+    subgraph "监控目标服务器-4"
+        A4["采集脚本"]
+    end
+
+    subgraph "UniBoard 后端"
+        E["API 接收端点"]
+        H["API 查询端点"]
+    end
+
+    subgraph "前端展示"
+        I["实时监控面板 / 状态颜色"]
+        J["全球地图展示 / ECharts"]
+    end
+    
+    A1 --> E
+    A2 --> E
+    A3 --> E
+    A4 --> E
+    H -.-> I
+    H -.-> J
+    I --> H
+    J --> H
+    
+    style E fill:#fff3e0
+    style H fill:#f1f8e9
+    style I fill:#fce4ec
 ```
 
 - 探针目标通过独立的 Key 进行身份认证
@@ -38,11 +77,43 @@ UniBoard 采用被动的"推"方式收集监控数据，即探针主动向 UniBo
 
 ### 2. 一键安装
 
-点击探针目标的"一键安装" → 生成安装脚本 → 在目标服务器执行：
+#### 1. 前置准备
+
+- Uniboard 需要已在系统设置中配置`站点URL`。
+- Uniboard 需要以 **HTTPS** 方式部署
+
+  **HTTPS** 并不是必选项，您可以在不启用 **HTTPS** 的情况下直接点击第二步。**不使用 HTTPS 会导致您的探针目标密钥对所有流量可见，任何中间人都可能伪造流量。**
+
+  **Uniboard 的探针服务使用单向数据流。**理论上在上报数据过程中，**探针客户端永远不会接受来自服务器的任何数据**，使用 **HTTP** 对探针目标是安全的，不可能会让探针目标陷入安全风险。
+
+  但是在探针目标上安装数据上报服务时，需要从您的 **Uniboard 实例获取数据上报脚本**，**此阶段若使用 HTTP 可能会使您的设备陷入中间人攻击，从而触发任意代码执行。**
+
+![probe install step 1](/public/img/dashboard/probe-install-1.webp)
+
+:::info
+Uniboard所提供的安装程序仅用于开箱即用的快速配置，您完全可以基于 OpenAPI 自行构建数据上报程序，API参阅 [API 文档](https://uniboard.apifox.cn/343396178e0)。
+:::
+
+#### 2. 生成安装脚本
+
+1. 点击探针目标的下载按钮
+2. 完成预检后点击继续
+3. 确认要操作的目标探针
+4. 点击生成按钮
+5. **手动复制安装脚本到目标服务器执行**
+
+![probe install step 2](/public/img/dashboard/probe-install-2.webp)
 
 ```bash
+# 类似于此
 curl -fsSL "https://your-domain.com/api/probe-script/installer/probe/[ID]/key/[KEY]/interval/60" | sudo bash
 ```
+
+:::info
+您可以直接修改命令中`interval`后的数字来控制上报间隔，默认间隔为60秒。最终真实安装在探针目标上的脚本是实时生成的。
+:::
+
+![probe install step 3](/public/img/dashboard/probe-install-3.webp)
 
 脚本将自动配置系统服务并启动数据上报。
 
@@ -52,10 +123,11 @@ curl -fsSL "https://your-domain.com/api/probe-script/installer/probe/[ID]/key/[K
 - **内存使用率**：0-100%，同上颜色规则
 - **系统负载**：绿色(≤1.0) / 黄色(1.0-2.0) / 红色(>2.0)
 - **在线状态**：5分钟内有数据上报即为在线
+- **实时刷新**：页面会实时轮询数据，展示探针目标的实时状态
 
 ## 地图展示
 
-基于 ECharts 的全球地图，实时显示所有探针目标的地理位置和状态。探针以红色散点标识。
+基于 ECharts 的全球地图，显示所有探针目标的地理位置和状态。探针以红色散点标识。
 
 ## 管理功能
 

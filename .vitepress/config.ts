@@ -1,7 +1,7 @@
-import { defineConfig } from 'vitepress'
+import { withMermaid } from "vitepress-plugin-mermaid";
 
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+export default withMermaid({
   title: "UniBoard 文档",
   description: "开源的一揽子服务 - 个人主页、导航页、笔记、短链、文件分享、探针服务",
   head: [
